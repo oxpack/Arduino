@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Temperature Control
+Comment=This is my comment
+Exec=/home/BioServeST/etc/Control.py
+Icon=/usr/share/MyApp/MyApp.py
+Path=/home/BioServeST/etc/
+Terminal=false
+Type=Application
+Categories=Application;
+Comment[en_US]=Control the ETC
+Name[en_US]=Control
