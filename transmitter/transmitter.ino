@@ -12,6 +12,7 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#include "LowPower.h"
 
 const int led_pin = 11;
 const int transmit_pin = 12;
@@ -49,15 +50,14 @@ void setup()
 }
 
 void GetValues(char*);
-unsigned long time;
+//unsigned long time;
 
 void loop()
 {
   int i;
-  char msg[] = "T-1234H123P1234";
+  char msg[] = "T-xxxxHyyyPzzzz";
 
   Temp(msg);
-
   Serial.print("Send: ");
   Serial.print(msg);
   SendMsg(msg);
@@ -72,11 +72,11 @@ void loop()
   Serial.print(msg);
   SendMsg(msg);
 
-  time = millis();
-
-  while (millis() - time < 20000 && digitalRead(sw) == HIGH) {
-    delay(1000);
-  }
+  //time = millis();
+  LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+//  while (millis() - time < 20000 && digitalRead(sw) == HIGH) {
+  //  delay(1000);
+  //}
 }
 
 

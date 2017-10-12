@@ -27,15 +27,14 @@ unsigned long previousMillis = 0;
 void setup()
 {
   delay(1000);
+  
+  
+  //serial to debug
   Serial.begin(9600);	// Debugging only
+
+  //for receiving 433 mhz
   mySerial.begin(2400);
 
-/*    if (! rtc.begin()) {
-    Serial.println("Couldn't find RTC");
-    while (1);
-  }
-  */
-  
   Serial.println("##Starting and waiting for msg");
 
   // Initialise the IO and ISR
@@ -49,15 +48,16 @@ void setup()
 
   pinMode(led_pin, OUTPUT);
 }
+float temp;
+char temp_c[10];
+
 
 void loop()
 {
   uint8_t buf[VW_MAX_MESSAGE_LEN];
   uint8_t buflen = VW_MAX_MESSAGE_LEN;
   
-  char temp_c[9];
-  float temp;
-
+  
 
   if (vw_get_message(buf, &buflen) ) // Non-blocking
   {
@@ -68,25 +68,22 @@ void loop()
     for (i = 0; i < buflen - 1; i++)
     {
       Serial.print(char(buf[i]));
-      mySerial.print(char(buf[i]));
     }
-     
     Serial.println();
-    mySerial.println();
     digitalWrite(led_pin, LOW);
   }
   
-  if(millis()-previousMillis>10000)
+  if(millis()-previousMillis>20000)
   {
     temp = float(analogRead(sensorPin)) / 1024.0 * 500.0;
     temp = (temp - 32.0) * 5.0 / 9.0;
     sprintf(temp_c, "t%c%04d\n", temp>0?'+':'-',(int) abs(temp * 100.0) );
     
     Serial.print(temp_c);
-    mySerial.print(temp_c);
-   // DateTime now = rtc.now();
-   // Serial.print("TIME:");
-    //Serial.println(now.unixtime());
+  
     previousMillis = millis();
   }
 }
+
+
+
